@@ -3,6 +3,7 @@ import discord
 import json
 import urllib.request
 import re
+import threading
 from discord.ext import commands
 
 Bot = commands.Bot(command_prefix = ";")
@@ -11,9 +12,10 @@ API = "http://verify.eryn.io/api/user/"
 
 
 
-Warnings = []
-Mutes = []
+Warns = []
 Roles = json.loads(open("Roles.json").read())
+
+########## FUNCTIONS V
 
 def SiteContents(url):
     Request = urllib.request.Request(url, headers={"User-Agent":'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7'})
@@ -41,16 +43,21 @@ def GroupRank(RobloxID, Group):
 def GetRole(Guild, Name):
     Role = discord.utils.get(Guild.roles, name=Name)
     return Role
-
+def GetChannel(Guild, Name):
+    Channel = discord.utils.get(Guild.channels, name=Name)
+    return Channel
 def IsModerator(Guild, Member):
     Role = GetRole(Guild, "Server Moderator")
     for HasRoles in Member.roles:
         if Role == HasRoles:
-            return true
+            return True
 
-async def DM(Member, Text):
+async def DM(Member, Text, Embed):
     try:
-        await Bot.send_message(Member, Text)
+        if Embed:
+            await Bot.send_message(Member, embed=Text)
+        else:
+            await Bot.send_message(Member, Text)
     except:
         pass
 
@@ -59,10 +66,10 @@ async def VerifyMember(Guild, ID):
     Member = Guild.get_member(ID)
     if Member:
         if HasVerified(ID) == "no sir":
-            await DM(Member, "Hi there! You are not verified, please verify by going to https://verify.eryn.io")
+            await DM(Member, "Hi there! You are not verified, please verify by going to https://verify.eryn.io", False)
         else:
             Name, RobloxID = HasVerified(ID)
-            await DM(Member, "You have been verified! Please allow up to 1 minute for your roles to be given.")
+            await DM(Member, "You have been verified! Please allow up to 1 minute for your roles to be given.", False)
             for RoleName, RoleInformation in Roles.items():
                 print(RoleName)
                 Group = RoleInformation['GroupID']
@@ -83,12 +90,55 @@ async def VerifyMember(Guild, ID):
             await Bot.change_nickname(Member, Name)
 
 
-def Mute(From, Victim):
-    pass # Not yet implemented
-def Warn(From, Victim):
-    pass # Not yet implemented
-def UpdateWarns():
-    pass # Not yet implemented
+
+def LogMessage(Moderator, Victim, Action, Reason):
+    Title = Action + " by " + Moderator
+    Description = Action + " for\n```" + Reason + "```"
+    Embed = discord.Embed(title=Title, description=Description, type="rich")
+    Embed.add_field(name="Moderator Name", value = Moderator, inline=False)
+    Embed.add_field(name="Victim Name", value = Victim, inline=False)
+    Embed.add_field(name="Action", value = Action, inline=False)
+    return Embed
+
+
+async def Mute(From, Victim, Reason):
+    for VictimRoles in Victim.roles:
+        await Bot.remove_roles(Victim, VictimRoles)
+    for VictimRoles in Victim.roles:
+        await Bot.remove_roles(Victim, VictimRoles)
+    MutedRole = GetRole(Victim.server, "Muted")
+    await Bot.add_roles(Victim, MutedRole)
+
+    Embeded = LogMessage(From.name, Victim.name, "Mute", Reason)
+    
+    await DM(Victim, Embeded, True)
+    await Bot.send_message(GetChannel(Victim.server, "logs"), embed=Embeded)
+    
+
+
+
+async def Warn(From, Victim, Reason):
+
+    Warns.append(Victim.id)
+    if Warns.count(Victim.id) >= 3:
+        Bot.kick(Victim)
+        Warns.remove(Victim.id)
+        Warns.remove(Victim.id)
+        Warns.remove(Victim.id)
+    
+    Embeded = LogMessage(From.name, Victim.name, "Warn", Reason)
+    await DM(Victim, Embeded, True)
+    await Bot.send_message(GetChannel(Victim.server, "logs"), embed=Embeded)
+
+
+    
+async def Unmute(Member):
+    for MemberRoles in Member.roles:
+        await Bot.remove_roles(MemberRoles)
+    await VerifyMember(Member.server, Member.id)
+
+
+######## Commands V
 
 @Bot.command(pass_context=True)
 async def verify(Context):
@@ -100,23 +150,59 @@ async def verify(Context):
     except:
         pass
 
+
+
 @Bot.command(pass_context=True)
 async def warn(Context):
     Message = Context.message
     Guild = Message.server
-    Member = Guild.get_member(Message.author.id)
-    Victim = Message.mentions[0]
-    Warn(Member, Victim)
-
+    try:
+        Member = Guild.get_member(Message.author.id)
+        if Member and IsModerator(Guild, Member):
+            Victim = Message.mentions[0]
+            Reason = Message.content[9+len(Message.raw_mentions[0]): len(Message.content)]
+            await Warn(Member, Victim, Reason)
+            await Bot.delete_message(Message)
+    except:
+        pass
+        
 @Bot.command(pass_context=True)
 async def mute(Context):
     Message = Context.message
     Guild = Message.server
-    Member = Guild.get_member(Message.author.id)
-    Victim = Message.mentions[0]
-    Mute(Member, Victim)
+    try:
+        Member = Guild.get_member(Message.author.id)
+        if Member and IsModerator(Guild, Member):
+            Victim = Message.mentions[0]
+            Reason = Message.content[9+len(Message.raw_mentions[0]): len(Message.content)]
+            await Mute(Member, Victim, Reason)
+            await Bot.delete_message(Message)
+    except:
+        pass
 
 
+@Bot.command(pass_context=True)
+async def checkwarns(Context):
+    Message = Context.message
+    Guild = Message.server
+    Channel = Message.channel
+    WarningsGiven = Warns.count(Message.author.id)
+    await Bot.send_message(Channel, "<@" + Message.author.id + "> you have " + str(WarningsGiven) + " warnings!")
+
+######### Reaction warn and mute system
+
+@Bot.event
+async def on_reaction_add(Reaction, Member):
+    Message = Reaction.message
+    Guild = Message.server
+    Victim = Guild.get_member(Message.author.id)
+    if IsModerator(Guild, Member):
+        if Reaction.emoji.name == "mute":
+            await Mute(Member, Victim, "Player said: " + Message.content)
+        elif Reaction.emoji.name == "warn":
+            await Warn(Member, Victim, "Player said: " + Message.content)
+        elif Reaction.Emoji.name == "kick":
+            pass
+    await Bot.delete_message(Message)
     
-
-Bot.run('')
+Bot.run(str(SiteContents("http://thegalactic.co.uk/GetToken.php"))[2:61])
