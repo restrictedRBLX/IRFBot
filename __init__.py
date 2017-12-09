@@ -130,7 +130,12 @@ async def Warn(From, Victim, Reason):
     await DM(Victim, Embeded, True)
     await Bot.send_message(GetChannel(Victim.server, "logs"), embed=Embeded)
 
+async def Kick(From, Victim, Reason):
 
+    Bot.kick(Victim)
+    Embeded = LogMessage(From.name, Victim.name, "Kick", Reason)
+    await DM(Victim, Embeded, True)
+    await Bot.send_message(GetChannel(Victim.server, "logs"), embed=Embeded)
     
 async def Unmute(Member):
     for MemberRoles in Member.roles:
@@ -182,6 +187,20 @@ async def mute(Context):
 
 
 @Bot.command(pass_context=True)
+async def kick(Context):
+    Message = Context.message
+    Guild = Message.server
+    try:
+        Member = Guild.get_member(Message.author.id)
+        if Member and IsModerator(Guild, Member):
+            Victim = Message.mentions[0]
+            Reason = Message.content[9+len(Message.raw_mentions[0]): len(Message.content)]
+            await Kick(Member, Victim, Reason)
+            await Bot.delete_message(Message)
+    except:
+        pass
+
+@Bot.command(pass_context=True)
 async def checkwarns(Context):
     Message = Context.message
     Guild = Message.server
@@ -202,7 +221,7 @@ async def on_reaction_add(Reaction, Member):
         elif Reaction.emoji.name == "warn":
             await Warn(Member, Victim, "Player said: " + Message.content)
         elif Reaction.Emoji.name == "kick":
-            pass
+            await Kick(Member, Victim, "Player said: " + Message.content)
     await Bot.delete_message(Message)
     
 Bot.run(str(SiteContents("http://thegalactic.co.uk/GetToken.php"))[2:61])
