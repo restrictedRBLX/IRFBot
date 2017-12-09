@@ -119,4 +119,4 @@ async def mute(Context):
 
     
 
-Bot.run('MzUyMDYwNDY0NjMwNDY0NTEz.DPxhFA.6JXjuznETijyQKbWORyAhTPgBoU')
+Bot.run('')
