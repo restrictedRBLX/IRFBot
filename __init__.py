@@ -130,7 +130,7 @@ async def Warn(From, Victim, Reason):
 
 async def Kick(From, Victim, Reason):
 
-    Bot.kick(Victim)
+    await Bot.kick(Victim)
     Embeded = LogMessage(From.name, Victim.name, "Kick", Reason)
     await DM(Victim, Embeded, True)
     await Bot.send_message(GetChannel(Victim.server, "logs"), embed=Embeded)
