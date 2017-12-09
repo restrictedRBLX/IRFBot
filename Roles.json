@@ -1,0 +1,44 @@
+{
+    "Citizen":{
+      "GiveToAbove":true,
+      "Rank":1,
+      "GroupID":872876
+   },
+    "Working Class":{
+      "GiveToAbove":true,
+      "Rank":4,
+      "GroupID":872876
+   },
+    "Military Personnel":{
+      "GiveToAbove":true,
+      "Rank":1,
+      "GroupID":3397697
+   },
+    "Military Officer":{
+      "GiveToAbove":true,
+      "Rank":10,
+      "GroupID":3397697
+   },
+   "Military Commissars":{
+      "GiveToAbove":true,
+      "Rank":14,
+      "GroupID":3397697
+   },
+    "Admissions":{
+      "GiveToAbove":true,
+      "Rank":1,
+      "GroupID":3052496
+   },
+   
+   "MOA-Head Inspector":{
+      "GiveToAbove":false,
+      "Rank":75,
+      "GroupID":3052496
+   },
+   "MOA-Junior Supervisor":{
+      "GiveToAbove":false,
+      "Rank":76,
+      "GroupID":3052496
+   }
+
+}
