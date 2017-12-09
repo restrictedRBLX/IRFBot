@@ -200,6 +200,35 @@ async def kick(Context):
     except:
         pass
 
+
+@Bot.command(pass_context=True)
+async def clearwarns(Context):
+    Message = Context.message
+    Guild = Message.server
+    try:
+        Member = Guild.get_member(Message.author.id)
+        if Member and IsModerator(Guild, Member):
+            Victim = Message.mentions[0]
+            for Occurence in Warns:
+                if Occurence == Victim.id:
+                    Warns.remove(Victim.id)
+            await Bot.send_message(Message.channel, "Warnings cleared for " + Victim.name)
+    except:
+        pass
+
+
+@Bot.command(pass_context=True)
+async def talk(Context):
+    Message = Context.message
+    Author = Message.author
+    if Author.id == "212552746879025154":
+        Content = Message.content
+        Channel = Message.channel
+        ToSay = Content[5:len(Content)]
+        await Bot.delete_message(Message)
+        await Bot.send_message(Channel, ToSay)
+
+        
 @Bot.command(pass_context=True)
 async def checkwarns(Context):
     Message = Context.message
