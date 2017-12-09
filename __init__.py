@@ -62,7 +62,7 @@ async def VerifyMember(Guild, ID):
             await DM(Member, "Hi there! You are not verified, please verify by going to https://verify.eryn.io")
         else:
             Name, RobloxID = HasVerified(ID)
-            await DM(Member, "tYou have been verified! Please allow up to 1 minute for your roles to be given.")
+            await DM(Member, "You have been verified! Please allow up to 1 minute for your roles to be given.")
             for RoleName, RoleInformation in Roles.items():
                 print(RoleName)
                 Group = RoleInformation['GroupID']
@@ -82,22 +82,40 @@ async def VerifyMember(Guild, ID):
             
             await Bot.change_nickname(Member, Name)
 
-    
+
+def Mute(From, Victim):
+    pass # Not yet implemented
+def Warn(From, Victim):
+    pass # Not yet implemented
+def UpdateWarns():
+    pass # Not yet implemented
 
 @Bot.command(pass_context=True)
 async def verify(Context):
     Message = Context.message
     Guild = Message.server
-    Member = Guild.get_member(Message.author.id)
-    await VerifyMember(Guild, Member.id)
+    try:
+        Member = Guild.get_member(Message.author.id)
+        await VerifyMember(Guild, Member.id)
+    except:
+        pass
 
 @Bot.command(pass_context=True)
-async def warn(Context, Victim: discord.Member):
+async def warn(Context):
     Message = Context.message
     Guild = Message.server
     Member = Guild.get_member(Message.author.id)
+    Victim = Message.mentions[0]
+    Warn(Member, Victim)
 
-    print(Victim)
+@Bot.command(pass_context=True)
+async def mute(Context):
+    Message = Context.message
+    Guild = Message.server
+    Member = Guild.get_member(Message.author.id)
+    Victim = Message.mentions[0]
+    Mute(Member, Victim)
+
 
     
 
