@@ -4,7 +4,7 @@
       "Rank":1,
       "GroupID":872876
    },
-    "Working Class":{
+    "Proletariat":{
       "GiveToAbove":true,
       "Rank":4,
       "GroupID":872876
@@ -39,6 +39,65 @@
       "GiveToAbove":false,
       "Rank":76,
       "GroupID":3052496
-   }
-
+   },
+   "MOA-Apprentice Inspector":{
+      "GiveToAbove":false,
+      "Rank":25,
+      "GroupID":3052496
+   },
+   "MOA-Junior Inspector":{
+      "GiveToAbove":false,
+      "Rank":30,
+      "GroupID":3052496
+   },
+   "MOA-Inspector":{
+      "GiveToAbove":false,
+      "Rank":60,
+      "GroupID":3052496
+   },
+   "MOA-Supervisor":{
+      "GiveToAbove":false,
+      "Rank":77,
+      "GroupID":3052496
+   },
+   "Booth Operator":{
+      "GiveToAbove":true,
+      "Rank":20,
+      "GroupID":3052496
+   },
+   "Bolshevik":{
+      "GiveToAbove":true,
+      "Rank":1,
+      "GroupID":991882
+   },
+   "Party Cell":{
+      "GiveToAbove":false,
+      "Rank":1,
+      "GroupID":991882
+   },
+   "Partbureau":{
+      "GiveToAbove":false,
+      "Rank":2,
+      "GroupID":991882
+    },
+   "Central Committee":{
+      "GiveToAbove":false,
+      "Rank":11,
+      "GroupID":991882
+    },
+   "Cadet":{
+      "GiveToAbove":false,
+      "Rank":1,
+      "GroupID":3397697
+   },
+   "MOL-Unemployed":{
+      "GiveToAbove":false,
+      "Rank":1,
+      "GroupID":3396113
+   },
+   "MOL-Staff":{
+      "GiveToAbove":true,
+      "Rank":2,
+      "GroupID":3396113
+    }
 }
