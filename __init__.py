@@ -62,7 +62,7 @@ async def VerifyMember(Guild, ID):
             await DM(Member, "Hi there! You are not verified, please verify by going to https://verify.eryn.io")
         else:
             Name, RobloxID = HasVerified(ID)
-            await DM(Member, "You have been verified! Please allow up to 1 minute for your roles to be given.")
+            await DM(Member, "tYou have been verified! Please allow up to 1 minute for your roles to be given.")
             for RoleName, RoleInformation in Roles.items():
                 print(RoleName)
                 Group = RoleInformation['GroupID']
