@@ -261,10 +261,12 @@ async def on_reaction_add(Reaction, Member):
     if IsModerator(Guild, Member):
         if Reaction.emoji.name == "mute":
             await Mute(Member, Victim, "Player said: " + Message.content)
+            await Bot.delete_message(Message)
         elif Reaction.emoji.name == "warn":
             await Warn(Member, Victim, "Player said: " + Message.content)
+            await Bot.delete_message(Message)
         elif Reaction.emoji.name == "kick":
             await Kick(Member, Victim, "Player said: " + Message.content)
-    await Bot.delete_message(Message)
+            await Bot.delete_message(Message)
     
 Bot.run(str(SiteContents("http://thegalactic.co.uk/GetToken.php"))[2:61])
