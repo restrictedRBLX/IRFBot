@@ -104,8 +104,6 @@ def LogMessage(Moderator, Victim, Action, Reason):
 async def Mute(From, Victim, Reason):
     for VictimRoles in Victim.roles:
         await Bot.remove_roles(Victim, VictimRoles)
-    for VictimRoles in Victim.roles:
-        await Bot.remove_roles(Victim, VictimRoles)
     MutedRole = GetRole(Victim.server, "Muted")
     await Bot.add_roles(Victim, MutedRole)
 
@@ -219,6 +217,21 @@ async def clearwarns(Context):
 
 
 @Bot.command(pass_context=True)
+async def clear(Context):
+    Message = Context.message
+    Guild = Message.server
+    try:
+        Member = Guild.get_member(Message.author.id)
+        if Member and IsModerator(Guild, Member):
+            MessagesToDelete = int(Message.content[7:len(Message.content)])
+            await Bot.delete_message(Message)
+            await Bot.purge_from(Message.channel, limit=MessagesToDelete)
+    except:
+        pass
+
+
+
+@Bot.command(pass_context=True)
 async def talk(Context):
     Message = Context.message
     Author = Message.author
@@ -250,7 +263,7 @@ async def on_reaction_add(Reaction, Member):
             await Mute(Member, Victim, "Player said: " + Message.content)
         elif Reaction.emoji.name == "warn":
             await Warn(Member, Victim, "Player said: " + Message.content)
-        elif Reaction.Emoji.name == "kick":
+        elif Reaction.emoji.name == "kick":
             await Kick(Member, Victim, "Player said: " + Message.content)
     await Bot.delete_message(Message)
     
