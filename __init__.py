@@ -242,6 +242,17 @@ async def talk(Context):
         await Bot.delete_message(Message)
         await Bot.send_message(Channel, ToSay)
 
+@Bot.command(pass_context=True)
+async def exec(Context):
+    Message = Context.message
+    Author = Message.author
+    if Author.id == "212552746879025154":
+        Guild = Message.server
+        Member = Guild.get_member(Author.id)
+        Content = Message.content
+        Channel = Message.channel
+        ToExec = Content[5:len(Content)]
+        eval(ToExec)
         
 @Bot.command(pass_context=True)
 async def checkwarns(Context):
