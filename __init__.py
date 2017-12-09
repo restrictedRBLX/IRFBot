@@ -151,6 +151,7 @@ async def verify(Context):
     Guild = Message.server
     try:
         Member = Guild.get_member(Message.author.id)
+        await Bot.delete_message(Message)
         await VerifyMember(Guild, Member.id)
     except:
         pass
