@@ -274,4 +274,5 @@ async def on_reaction_add(Reaction, Member):
             await Bot.delete_message(Message)
 
 token = os.environ.get("token")
+print("oof")
 Bot.run(token)
