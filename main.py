@@ -272,5 +272,5 @@ async def on_reaction_add(Reaction, Member):
             await Kick(Member, Victim, "Player said: " + Message.content)
             await Bot.delete_message(Message)
 
-            
-Bot.run(str(SiteContents("http://thegalactic.co.uk/GetToken.php"))[2:61])
+print(str(SiteContents("http://thegalactic.co.uk/GetToken.php"))[2:61])            
+#Bot.run(str(SiteContents("http://thegalactic.co.uk/GetToken.php"))[2:61])
