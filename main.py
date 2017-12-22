@@ -11,7 +11,6 @@ IRF = None
 API = "http://verify.eryn.io/api/user/"
 
 
-
 Warns = []
 Roles = json.loads(open("Roles.json").read())
 
@@ -70,6 +69,7 @@ async def VerifyMember(Guild, ID):
         else:
             Name, RobloxID = HasVerified(ID)
             await DM(Member, "You have been verified! Please allow up to 1 minute for your roles to be given.", False)
+            await Bot.change_nickname(Member, Name)
             for RoleName, RoleInformation in Roles.items():
                 print(RoleName)
                 Group = RoleInformation['GroupID']
@@ -87,7 +87,7 @@ async def VerifyMember(Guild, ID):
                     else:
                         await Bot.remove_roles(Member, Role)
             
-            await Bot.change_nickname(Member, Name)
+            
 
 
 
@@ -116,14 +116,6 @@ async def Mute(From, Victim, Reason):
 
 
 async def Warn(From, Victim, Reason):
-
-    Warns.append(Victim.id)
-    if Warns.count(Victim.id) >= 3:
-        Bot.kick(Victim)
-        Warns.remove(Victim.id)
-        Warns.remove(Victim.id)
-        Warns.remove(Victim.id)
-    
     Embeded = LogMessage(From.name, Victim.name, "Warn", Reason)
     await DM(Victim, Embeded, True)
     await Bot.send_message(GetChannel(Victim.server, "logs"), embed=Embeded)
@@ -279,5 +271,6 @@ async def on_reaction_add(Reaction, Member):
         elif Reaction.emoji.name == "kick":
             await Kick(Member, Victim, "Player said: " + Message.content)
             await Bot.delete_message(Message)
-    
+
+            
 Bot.run(str(SiteContents("http://thegalactic.co.uk/GetToken.php"))[2:61])
