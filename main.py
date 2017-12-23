@@ -262,7 +262,7 @@ async def on_reaction_add(Reaction, Member):
     Guild = Message.server
     Channel = Message.channel
     Victim = Guild.get_member(Message.author.id)
-    print(Reaction.emoji, Reaction.emoji.name)
+    print(Reaction.emoji)
     if IsModerator(Guild, Member):
         if Reaction.emoji.name == "mute":
             await Mute(Member, Victim, "Player said: " + Message.clean_content)
