@@ -42,7 +42,7 @@ def GroupRank(RobloxID, Group):
 
 def GetRole(Guild, Name):
     Role = discord.utils.get(Guild.roles, name=Name)
-    print("Found Role: " + Role)
+    print("Found Role: " + Role.name)
     return Role
 def GetChannel(Guild, Name):
     Channel = discord.utils.get(Guild.channels, name=Name)
