@@ -263,13 +263,13 @@ async def on_reaction_add(Reaction, Member):
     Victim = Guild.get_member(Message.author.id)
     if IsModerator(Guild, Member):
         if Reaction.emoji.name == "mute":
-            await Mute(Member, Victim, "Player said: " + Message.content)
+            await Mute(Member, Victim, "Player said: " + Message.clean_content)
             await Bot.delete_message(Message)
         elif Reaction.emoji.name == "warn":
-            await Warn(Member, Victim, "Player said: " + Message.content)
+            await Warn(Member, Victim, "Player said: " + Message.clean_content)
             await Bot.delete_message(Message)
         elif Reaction.emoji.name == "kick":
-            await Kick(Member, Victim, "Player said: " + Message.content)
+            await Kick(Member, Victim, "Player said: " + Message.clean_content)
             await Bot.delete_message(Message)
 
 token = os.environ.get("token")
