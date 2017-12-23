@@ -108,10 +108,9 @@ async def Mute(From, Victim, Reason):
     MutedRole = GetRole(Victim.server, "Muted")
     await Bot.add_roles(Victim, MutedRole)
 
-    Embeded = LogMessage(From.name, Victim.name, "Mute", Reason)
-    
+    Embeded = LogMessage(From.name, Victim.name, "Mute", Reason)    
     await DM(Victim, Embeded, True)
-    await Bot.send_message(GetChannel(Victim.server, "logs"), embed=Embeded)
+    await Bot.send_message(GetChannel(Victim.server, "joint_logs"), embed=Embeded)
     
 
 
@@ -119,14 +118,14 @@ async def Mute(From, Victim, Reason):
 async def Warn(From, Victim, Reason):
     Embeded = LogMessage(From.name, Victim.name, "Warn", Reason)
     await DM(Victim, Embeded, True)
-    await Bot.send_message(GetChannel(Victim.server, "logs"), embed=Embeded)
+    await Bot.send_message(GetChannel(Victim.server, "joint_logs"), embed=Embeded)
 
 async def Kick(From, Victim, Reason):
 
     await Bot.kick(Victim)
     Embeded = LogMessage(From.name, Victim.name, "Kick", Reason)
     await DM(Victim, Embeded, True)
-    await Bot.send_message(GetChannel(Victim.server, "logs"), embed=Embeded)
+    await Bot.send_message(GetChannel(Victim.server, "joint_logs"), embed=Embeded)
     
 async def Unmute(Member):
     for MemberRoles in Member.roles:
