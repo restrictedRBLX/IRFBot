@@ -1,9 +1,4 @@
 {
-    "Citizen":{
-      "GiveToAbove":true,
-      "Rank":1,
-      "GroupID":872876
-   },
     "Proletariat":{
       "GiveToAbove":true,
       "Rank":4,

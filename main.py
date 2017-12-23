@@ -42,6 +42,7 @@ def GroupRank(RobloxID, Group):
 
 def GetRole(Guild, Name):
     Role = discord.utils.get(Guild.roles, name=Name)
+    print("Found Role: " + Role)
     return Role
 def GetChannel(Guild, Name):
     Channel = discord.utils.get(Guild.channels, name=Name)
@@ -142,7 +143,7 @@ async def verify(Context):
     #try:
     Member = Guild.get_member(Message.author.id)
     await Bot.delete_message(Message)
-    await VerifyMember(Guild, Member.id)
+    await VerifyMember(Guild, Message.author.id)
     #except:
         #pass
 
