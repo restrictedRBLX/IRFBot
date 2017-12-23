@@ -262,7 +262,7 @@ async def on_reaction_add(Reaction, Member):
     Guild = Message.server
     Channel = Message.channel
     Victim = Guild.get_member(Message.author.id)
-    print(Reaction.emoji.name)
+    print(Reaction.emoji, Reaction.emoji.name)
     if IsModerator(Guild, Member):
         if Reaction.emoji.name == "mute":
             await Mute(Member, Victim, "Player said: " + Message.clean_content)
@@ -274,6 +274,7 @@ async def on_reaction_add(Reaction, Member):
             await Kick(Member, Victim, "Player said: " + Message.clean_content)
             await Bot.delete_message(Message)
     else:
+        pass
         #if Channel.name == "joint_announcements":
             
         
