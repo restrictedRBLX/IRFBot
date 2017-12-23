@@ -262,21 +262,19 @@ async def on_reaction_add(Reaction, Member):
     Guild = Message.server
     Channel = Message.channel
     Victim = Guild.get_member(Message.author.id)
-    print(Reaction.emoji)
-    if IsModerator(Guild, Member):
-        if Reaction.emoji.name == "mute":
-            await Mute(Member, Victim, "Player said: " + Message.clean_content)
-            await Bot.delete_message(Message)
-        elif Reaction.emoji.name == "warn":
-            await Warn(Member, Victim, "Player said: " + Message.clean_content)
-            await Bot.delete_message(Message)
-        elif Reaction.emoji.name == "kick":
-            await Kick(Member, Victim, "Player said: " + Message.clean_content)
-            await Bot.delete_message(Message)
-    else:
+    try:
+        if IsModerator(Guild, Member):
+            if Reaction.emoji.name == "mute":
+                await Mute(Member, Victim, "Player said: " + Message.clean_content)
+                await Bot.delete_message(Message)
+            elif Reaction.emoji.name == "warn":
+                await Warn(Member, Victim, "Player said: " + Message.clean_content)
+                await Bot.delete_message(Message)
+            elif Reaction.emoji.name == "kick":
+                await Kick(Member, Victim, "Player said: " + Message.clean_content)
+                await Bot.delete_message(Message)
+    except:
         pass
-        #if Channel.name == "joint_announcements":
-            
         
 token = os.environ.get("token")
 print("oof")
