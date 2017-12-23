@@ -42,7 +42,6 @@ def GroupRank(RobloxID, Group):
 
 def GetRole(Guild, Name):
     Role = discord.utils.get(Guild.roles, name=Name)
-    print("Found Role: " + Role.name)
     return Role
 def GetChannel(Guild, Name):
     Channel = discord.utils.get(Guild.channels, name=Name)
@@ -261,7 +260,9 @@ async def checkwarns(Context):
 async def on_reaction_add(Reaction, Member):
     Message = Reaction.message
     Guild = Message.server
+    Channel = Message.channel
     Victim = Guild.get_member(Message.author.id)
+    print(Reaction.emoji.name)
     if IsModerator(Guild, Member):
         if Reaction.emoji.name == "mute":
             await Mute(Member, Victim, "Player said: " + Message.clean_content)
@@ -272,7 +273,10 @@ async def on_reaction_add(Reaction, Member):
         elif Reaction.emoji.name == "kick":
             await Kick(Member, Victim, "Player said: " + Message.clean_content)
             await Bot.delete_message(Message)
-
+    else:
+        #if Channel.name == "joint_announcements":
+            
+        
 token = os.environ.get("token")
 print("oof")
 Bot.run(token)

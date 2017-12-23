@@ -85,12 +85,12 @@
       "Rank":1,
       "GroupID":3397697
    },
-   "MOL-Unemployed":{
+   "MOL - Unemployed":{
       "GiveToAbove":false,
       "Rank":1,
       "GroupID":3396113
    },
-   "MOL-Staff":{
+   "MOL - Staff":{
       "GiveToAbove":true,
       "Rank":2,
       "GroupID":3396113
